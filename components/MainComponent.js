@@ -1,3 +1,10 @@
+// redux
+import { connect } from 'react-redux';
+import { fetchLeaders } from '../redux/ActionCreators';
+const mapDispatchToProps = dispatch => ({
+  fetchLeaders: () => dispatch(fetchLeaders())
+});
+
 import React, { Component } from 'react';
 import { View, Text, Linking } from 'react-native';
 import { Icon, Image } from 'react-native-elements';
@@ -142,6 +149,11 @@ function AboutNavigatorScreen() {
 }
 
 class Main extends Component {
+  componentDidMount() {
+    // redux
+    this.props.fetchLeaders();
+  }
+
   render() {
     return (
       <NavigationContainer>
@@ -150,4 +162,4 @@ class Main extends Component {
     );
   }
 }
-export default Main;
+export default connect(null, mapDispatchToProps) (Main);
