@@ -1,44 +1,63 @@
 import React, { Component } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { View, Text, Linking } from 'react-native';
+import { Icon, Image } from 'react-native-elements';
 
-import ContactUS from './ContactUsComponent';
-import AboutUS from './AboutUsComponent';
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import Contact from './ContactComponent';
+import About from './AboutComponent';
 import Home from './HomeComponent';
 import Menu from './MenuComponent';
 import Dishdetail from './DishdetailComponent';
 
-const ContactUsNavigator = createStackNavigator();
-function ContactUsNavigatorScreen() {
+const MainNavigator = createDrawerNavigator();
+
+function CustomDrawerContent(props) {
   return (
-    <ContactUsNavigator.Navigator
-      initialRouteName='Contact Us'
-      screenOptions={{
-        headerStyle: { backgroundColor: '#512DA8' },
-        headerTintColor: '#fff',
-        headerTitleStyle: { color: '#fff' }
-      }}
-    >
-      <ContactUsNavigator.Screen name='Contact Us' component={ContactUS} />
-    </ContactUsNavigator.Navigator>
-  )
+    <DrawerContentScrollView {...props}>
+      <View style={{ backgroundColor: '#ffb3e6', height: 80, alignItems: 'center', flexDirection: 'row' }}>
+        <View style={{ flex: 1 }}>
+          <Image source={require('./images/logo.png')} style={{ margin: 10, width: 80, height: 60 }} />
+        </View>
+        <View style={{ flex: 2 }}>
+          <Text style={{ color: '#fff', fontSize: 22, fontWeight: 'bold' }}>Hồng Ngọc</Text>
+        </View>
+      </View>
+      <DrawerItemList {...props} />
+      <DrawerItem label='Help'
+        icon={({ focused, color, size }) => <Icon name='help' size={size} color={focused ? '#ffb3e6' : '#ccc'} />}
+        onPress={() => Linking.openURL('https://reactnavigation.org/docs/getting-started')} />
+    </DrawerContentScrollView>
+  );
 }
 
-const AboutUsNavigator = createStackNavigator();
-function AboutUsNavigatorScreen() {
+function MainNavigatorScreen() {
   return (
-    <AboutUsNavigator.Navigator
-      initialRouteName='About Us'
-      screenOptions={{
-        headerStyle: { backgroundColor: '#512DA8' },
-        headerTintColor: '#fff',
-        headerTitleStyle: { color: '#fff' }
-      }}
-    >
-      <AboutUsNavigator.Screen name='About Us' component={AboutUS} />
-    </AboutUsNavigator.Navigator>
-  )
+    <MainNavigator.Navigator initialRouteName='Home' drawerContent={props => <CustomDrawerContent {...props} />} >
+      <MainNavigator.Screen name='Home' component={HomeNavigatorScreen} 
+        options={{
+        title: 'Home',
+        drawerIcon: ({ focused, size }) => (<Icon name='home' size={size} color={focused ? '#ffb3e6' : '#ccc'} />)
+      }} />
+      <MainNavigator.Screen name='About' component={AboutNavigatorScreen} 
+        options={{
+        title: 'About Us',
+        drawerIcon: ({ focused, size }) => (<Icon name='info' size={size} color={focused ? '#ffb3e6' : '#ccc'} />)
+      }} />
+      <MainNavigator.Screen name='Menu' component={MenuNavigatorScreen}
+        options={{
+        title: 'Menu',
+        drawerIcon: ({ focused, size }) => (<Icon name='menu' size={size} color={focused ? '#ffb3e6' : '#ccc'} />)
+      }} />
+      <MainNavigator.Screen name='Contact' component={ContactNavigatorScreen}
+        options={{
+        title: 'Contact Us',
+        drawerIcon: ({ focused, size }) => (<Icon name='contacts' size={size} color={focused ? '#ffb3e6' : '#ccc'} />)
+      }} />
+    </MainNavigator.Navigator>
+  );
 }
 
 const HomeNavigator = createStackNavigator();
@@ -51,7 +70,11 @@ function HomeNavigatorScreen() {
         headerTintColor: '#fff',
         headerTitleStyle: { color: '#fff' }
       }}>
-      <HomeNavigator.Screen name='Home' component={Home} />
+      <HomeNavigator.Screen name='Home' component={Home} 
+          options={({ navigation }) => ({
+          headerTitle: 'Home',
+          headerLeft: () => (<Icon name='menu' size={36} color='#fff' onPress={() => navigation.toggleDrawer()} />)
+        })} />
     </HomeNavigator.Navigator>
   );
 }
@@ -66,22 +89,56 @@ function MenuNavigatorScreen() {
         headerTintColor: '#fff',
         headerTitleStyle: { color: '#fff' }
       }}>
-      <MenuNavigator.Screen name='Menu' component={Menu} />
-      <MenuNavigator.Screen name='Dishdetail' component={Dishdetail} options={{ headerTitle: 'Dish Detail' }} />
+      <MenuNavigator.Screen name='Menu' component={Menu} 
+        options={({ navigation }) => ({
+          headerTitle: 'Menu',
+          headerLeft: () => (<Icon name='menu' size={36} color='#fff' onPress={() => navigation.toggleDrawer()} />)
+        })} />
+      <MenuNavigator.Screen name='Dishdetail' component={Dishdetail} 
+          options={{
+            headerTitle: 'Dish Detail'
+          }} />
     </MenuNavigator.Navigator>
   );
 }
 
-const MainNavigator = createDrawerNavigator();
-function MainNavigatorScreen() {
+const ContactNavigator = createStackNavigator();
+function ContactNavigatorScreen() {
   return (
-    <MainNavigator.Navigator initialRouteName='Home'>
-      <MainNavigator.Screen name='Home' component={HomeNavigatorScreen} />
-      <MainNavigator.Screen name='About Us' component={AboutUsNavigatorScreen} />
-      <MainNavigator.Screen name='Menu' component={MenuNavigatorScreen} />
-      <MainNavigator.Screen name='Contact Us' component={ContactUsNavigatorScreen} />
-    </MainNavigator.Navigator>
-  );
+    <ContactNavigator.Navigator
+      initialRouteName='Contact'
+      screenOptions={{
+        headerStyle: { backgroundColor: '#512DA8' },
+        headerTintColor: '#fff',
+        headerTitleStyle: { color: '#fff' }
+      }}
+    >
+      <ContactNavigator.Screen name='Contact' component={Contact}
+      options={({ navigation }) => ({
+        headerTitle: 'Contact',
+        headerLeft: () => (<Icon name='menu' size={36} color='#fff' onPress={() => navigation.toggleDrawer()} />)
+      })} />
+    </ContactNavigator.Navigator>
+  )
+}
+
+const AboutNavigator = createStackNavigator();
+function AboutNavigatorScreen() {
+  return (
+    <AboutNavigator.Navigator
+      initialRouteName='About'
+      screenOptions={{
+        headerStyle: { backgroundColor: '#512DA8' },
+        headerTintColor: '#fff',
+        headerTitleStyle: { color: '#fff' }
+      }}
+    >
+      <AboutNavigator.Screen name='About' component={About} options={({ navigation }) => ({
+          headerTitle: 'About',
+          headerLeft: () => (<Icon name='menu' size={36} color='#fff' onPress={() => navigation.toggleDrawer()} />)
+        })} />
+    </AboutNavigator.Navigator>
+  )
 }
 
 class Main extends Component {
