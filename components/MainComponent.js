@@ -17,7 +17,7 @@ const MainNavigator = createDrawerNavigator();
 function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
-      <View style={{ backgroundColor: '#ffb3e6', height: 80, alignItems: 'center', flexDirection: 'row' }}>
+      <View style={{ backgroundColor: '#7cc', height: 80, alignItems: 'center', flexDirection: 'row' }}>
         <View style={{ flex: 1 }}>
           <Image source={require('./images/logo.png')} style={{ margin: 10, width: 80, height: 60 }} />
         </View>
@@ -27,7 +27,7 @@ function CustomDrawerContent(props) {
       </View>
       <DrawerItemList {...props} />
       <DrawerItem label='Help'
-        icon={({ focused, color, size }) => <Icon name='help' size={size} color={focused ? '#ffb3e6' : '#ccc'} />}
+        icon={({ focused, color, size }) => <Icon name='help' size={size} color={focused ? '#7cc' : '#ccc'} />}
         onPress={() => Linking.openURL('https://reactnavigation.org/docs/getting-started')} />
     </DrawerContentScrollView>
   );
@@ -39,22 +39,22 @@ function MainNavigatorScreen() {
       <MainNavigator.Screen name='Home' component={HomeNavigatorScreen} 
         options={{
         title: 'Home',
-        drawerIcon: ({ focused, size }) => (<Icon name='home' size={size} color={focused ? '#ffb3e6' : '#ccc'} />)
+        drawerIcon: ({ focused, size }) => (<Icon name='home' size={size} color={focused ? '#7cc' : '#ccc'} />)
       }} />
       <MainNavigator.Screen name='About' component={AboutNavigatorScreen} 
         options={{
         title: 'About Us',
-        drawerIcon: ({ focused, size }) => (<Icon name='info' size={size} color={focused ? '#ffb3e6' : '#ccc'} />)
+        drawerIcon: ({ focused, size }) => (<Icon name='info' size={size} color={focused ? '#7cc' : '#ccc'} />)
       }} />
       <MainNavigator.Screen name='Menu' component={MenuNavigatorScreen}
         options={{
         title: 'Menu',
-        drawerIcon: ({ focused, size }) => (<Icon name='menu' size={size} color={focused ? '#ffb3e6' : '#ccc'} />)
+        drawerIcon: ({ focused, size }) => (<Icon name='menu' size={size} color={focused ? '#7cc' : '#ccc'} />)
       }} />
       <MainNavigator.Screen name='Contact' component={ContactNavigatorScreen}
         options={{
         title: 'Contact Us',
-        drawerIcon: ({ focused, size }) => (<Icon name='contacts' size={size} color={focused ? '#ffb3e6' : '#ccc'} />)
+        drawerIcon: ({ focused, size }) => (<Icon name='contacts' size={size} color={focused ? '#7cc' : '#ccc'} />)
       }} />
     </MainNavigator.Navigator>
   );
