@@ -10,15 +10,21 @@ import React, { Component } from 'react';
 import { FlatList } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import { baseUrl } from '../shared/baseUrl';
+import Loading from './LoadingComponent';
 
 class Menu extends Component {
-
   render() {
-    return (
-      <FlatList data={this.props.dishes.dishes}
-        renderItem={({ item, index }) => this.renderMenuItem(item, index)}
-        keyExtractor={item => item.id.toString()} />
-    );
+    if (this.props.dishes.isLoading) {
+      return (<Loading />);
+    } else if (this.props.dishes.errMess) {
+      return (<Text>{this.props.errMess}</Text>);
+    } else {
+      return (
+        <FlatList data={this.props.dishes.dishes}
+          renderItem={({ item, index }) => this.renderMenuItem(item, index)}
+          keyExtractor={item => item.id.toString()} />
+      );
+    }
   }
 
   renderMenuItem(item, index) {
