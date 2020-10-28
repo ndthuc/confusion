@@ -1,8 +1,11 @@
 // redux
 import { connect } from 'react-redux';
-import { fetchLeaders } from '../redux/ActionCreators';
+import { fetchLeaders, fetchDishes, fetchComments, fetchPromos } from '../redux/ActionCreators';
 const mapDispatchToProps = dispatch => ({
-  fetchLeaders: () => dispatch(fetchLeaders())
+  fetchLeaders: () => dispatch(fetchLeaders()),
+  fetchDishes: () => dispatch(fetchDishes()),
+  fetchComments: () => dispatch(fetchComments()),
+  fetchPromos: () => dispatch(fetchPromos())
 });
 
 import React, { Component } from 'react';
@@ -18,6 +21,7 @@ import About from './AboutComponent';
 import Home from './HomeComponent';
 import Menu from './MenuComponent';
 import Dishdetail from './DishdetailComponent';
+import { baseUrl } from '../shared/baseUrl';
 
 const MainNavigator = createDrawerNavigator();
 
@@ -26,7 +30,7 @@ function CustomDrawerContent(props) {
     <DrawerContentScrollView {...props}>
       <View style={{ backgroundColor: '#7cc', height: 80, alignItems: 'center', flexDirection: 'row' }}>
         <View style={{ flex: 1 }}>
-          <Image source={require('./images/logo.png')} style={{ margin: 10, width: 80, height: 60 }} />
+          <Image source={{ uri: baseUrl + 'images/logo.png' }} style={{ margin: 10, width: 80, height: 60 }} />
         </View>
         <View style={{ flex: 2 }}>
           <Text style={{ color: '#fff', fontSize: 22, fontWeight: 'bold' }}>Hồng Ngọc</Text>
@@ -43,26 +47,26 @@ function CustomDrawerContent(props) {
 function MainNavigatorScreen() {
   return (
     <MainNavigator.Navigator initialRouteName='Home' drawerContent={props => <CustomDrawerContent {...props} />} >
-      <MainNavigator.Screen name='Home' component={HomeNavigatorScreen} 
+      <MainNavigator.Screen name='Home' component={HomeNavigatorScreen}
         options={{
-        title: 'Home',
-        drawerIcon: ({ focused, size }) => (<Icon name='home' size={size} color={focused ? '#7cc' : '#ccc'} />)
-      }} />
-      <MainNavigator.Screen name='About' component={AboutNavigatorScreen} 
+          title: 'Home',
+          drawerIcon: ({ focused, size }) => (<Icon name='home' size={size} color={focused ? '#7cc' : '#ccc'} />)
+        }} />
+      <MainNavigator.Screen name='About' component={AboutNavigatorScreen}
         options={{
-        title: 'About Us',
-        drawerIcon: ({ focused, size }) => (<Icon name='info' size={size} color={focused ? '#7cc' : '#ccc'} />)
-      }} />
+          title: 'About Us',
+          drawerIcon: ({ focused, size }) => (<Icon name='info' size={size} color={focused ? '#7cc' : '#ccc'} />)
+        }} />
       <MainNavigator.Screen name='Menu' component={MenuNavigatorScreen}
         options={{
-        title: 'Menu',
-        drawerIcon: ({ focused, size }) => (<Icon name='menu' size={size} color={focused ? '#7cc' : '#ccc'} />)
-      }} />
+          title: 'Menu',
+          drawerIcon: ({ focused, size }) => (<Icon name='menu' size={size} color={focused ? '#7cc' : '#ccc'} />)
+        }} />
       <MainNavigator.Screen name='Contact' component={ContactNavigatorScreen}
         options={{
-        title: 'Contact Us',
-        drawerIcon: ({ focused, size }) => (<Icon name='contacts' size={size} color={focused ? '#7cc' : '#ccc'} />)
-      }} />
+          title: 'Contact Us',
+          drawerIcon: ({ focused, size }) => (<Icon name='contacts' size={size} color={focused ? '#7cc' : '#ccc'} />)
+        }} />
     </MainNavigator.Navigator>
   );
 }
@@ -77,8 +81,8 @@ function HomeNavigatorScreen() {
         headerTintColor: '#fff',
         headerTitleStyle: { color: '#fff' }
       }}>
-      <HomeNavigator.Screen name='Home' component={Home} 
-          options={({ navigation }) => ({
+      <HomeNavigator.Screen name='Home' component={Home}
+        options={({ navigation }) => ({
           headerTitle: 'Home',
           headerLeft: () => (<Icon name='menu' size={36} color='#fff' onPress={() => navigation.toggleDrawer()} />)
         })} />
@@ -96,15 +100,15 @@ function MenuNavigatorScreen() {
         headerTintColor: '#fff',
         headerTitleStyle: { color: '#fff' }
       }}>
-      <MenuNavigator.Screen name='Menu' component={Menu} 
+      <MenuNavigator.Screen name='Menu' component={Menu}
         options={({ navigation }) => ({
           headerTitle: 'Menu',
           headerLeft: () => (<Icon name='menu' size={36} color='#fff' onPress={() => navigation.toggleDrawer()} />)
         })} />
-      <MenuNavigator.Screen name='Dishdetail' component={Dishdetail} 
-          options={{
-            headerTitle: 'Dish Detail'
-          }} />
+      <MenuNavigator.Screen name='Dishdetail' component={Dishdetail}
+        options={{
+          headerTitle: 'Dish Detail'
+        }} />
     </MenuNavigator.Navigator>
   );
 }
@@ -121,10 +125,10 @@ function ContactNavigatorScreen() {
       }}
     >
       <ContactNavigator.Screen name='Contact' component={Contact}
-      options={({ navigation }) => ({
-        headerTitle: 'Contact',
-        headerLeft: () => (<Icon name='menu' size={36} color='#fff' onPress={() => navigation.toggleDrawer()} />)
-      })} />
+        options={({ navigation }) => ({
+          headerTitle: 'Contact',
+          headerLeft: () => (<Icon name='menu' size={36} color='#fff' onPress={() => navigation.toggleDrawer()} />)
+        })} />
     </ContactNavigator.Navigator>
   )
 }
@@ -141,9 +145,9 @@ function AboutNavigatorScreen() {
       }}
     >
       <AboutNavigator.Screen name='About' component={About} options={({ navigation }) => ({
-          headerTitle: 'About',
-          headerLeft: () => (<Icon name='menu' size={36} color='#fff' onPress={() => navigation.toggleDrawer()} />)
-        })} />
+        headerTitle: 'About',
+        headerLeft: () => (<Icon name='menu' size={36} color='#fff' onPress={() => navigation.toggleDrawer()} />)
+      })} />
     </AboutNavigator.Navigator>
   )
 }
@@ -152,6 +156,9 @@ class Main extends Component {
   componentDidMount() {
     // redux
     this.props.fetchLeaders();
+    this.props.fetchDishes();
+    this.props.fetchComments();
+    this.props.fetchPromos();
   }
 
   render() {
@@ -162,4 +169,4 @@ class Main extends Component {
     );
   }
 }
-export default connect(null, mapDispatchToProps) (Main);
+export default connect(null, mapDispatchToProps)(Main);
