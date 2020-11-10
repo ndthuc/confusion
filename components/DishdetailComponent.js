@@ -1,11 +1,17 @@
 // redux
 import { connect } from 'react-redux';
+import { postFavorite } from '../redux/ActionCreators';
 const mapStateToProps = state => {
   return {
     dishes: state.dishes,
-    comments: state.comments
+    comments: state.comments,
+    favorites: state.favorites
   }
 };
+
+const mapDispatchToProps = dispatch => ({
+  postFavorite: (dishId) => dispatch(postFavorite(dishId))
+});
 
 import React, { Component } from 'react';
 import { View, ScrollView, Text, FlatList, LogBox } from 'react-native';
@@ -60,18 +66,11 @@ class RenderComment extends Component{
 
 class Dishdetail extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      favorites: []
-    };
-  }
-
   render() {
     const dishId = parseInt(this.props.route.params.dishId);
     const dish=this.props.dishes.dishes[dishId];
     const comments = this.props.comments.comments.filter((comment) => comment.dishId === dishId);
-    const favorite = this.state.favorites.some(el => el === dishId);
+    const favorite = this.props.favorites.some(el => el === dishId);
     return (
       <ScrollView>
         <RenderDish dish = {dish} favorite = {favorite}
@@ -82,7 +81,7 @@ class Dishdetail extends Component {
   }
 
   markFavorite(dishId) {
-    this.setState({ favorites: this.state.favorites.concat(dishId)});
+    this.props.postFavorite(dishId);
   }
 }
-export default connect(mapStateToProps)(Dishdetail);
+export default connect(mapStateToProps, mapDispatchToProps)(Dishdetail);
