@@ -92,7 +92,22 @@ export const addComments = (comments) => ({
   type: ActionTypes.ADD_COMMENTS,
   payload: comments
 });
-
+export const postComent = (dishId, rating, author, comment) => dispatch => {
+  setTimeout(() => {
+    var newComment = {
+      dishId: dishId,
+      rating: rating,
+      author: author,
+      comment: comment,
+      date: new Date().toISOString()
+    }
+    dispatch(addComment(newComment));
+  }, 2000);
+};
+export const addComment = (newComment) => ({
+  type: ActionTypes.ADD_COMMENT,
+  payload: newComment
+});
 // promotions
 export const fetchPromos = () => (dispatch) => {
   dispatch(promosLoading());
